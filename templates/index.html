@@ -1,0 +1,22 @@
+<!-- index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Welcome to My Site</h1>
+    <p>This is the home page.</p>
+
+    <h2>Courses</h2>
+    <ul>
+        {% for course in courses %}
+            <li>
+                <h3>{{ course.name }}</h3>
+                <p>{{ course.description }}</p>
+                <p>Duration: {{ course.duration }} hours</p>
+                <p>Level: {{ course.level }}</p>
+                <button class="apply-button" data-course-id="{{ course.id }}">Apply for this course</button>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

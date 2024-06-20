@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Course Application{% endblock %}
+
+{% block content %}
+<h2>Course Application</h2>
+<form id="course-application-form">
+    <label for="course_id">Select Course:</label>
+    <select id="course_id" name="course_id">
+        {% for course in courses %}
+            <option value="{{ course.id }}" {% if course.id == course_id %}selected{% endif %}>{{ course.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="parent_email">Parent Email:</label>
+    <input type="email" id="parent_email" name="parent_email" required>
+
+    <label for="parent_phone">Parent Phone:</label>
+    <input type="tel" id="parent_phone" name="parent_phone" required>
+
+    {% if parent %}
+        <input type="hidden" id="parent_id" name="parent_id" value="{{ parent.id }}">
+    {% else %}
+        <div id="application-error" style="color: red;">You must be a parent to apply for a course.</div>
+    {% endif %}
+
+    <button type="submit" {% if not parent %}disabled{% endif %}>Submit</button>
+</form>
+<div id="application-error" style="display: none; color: red;">Error submitting application</div>
+{% endblock %}

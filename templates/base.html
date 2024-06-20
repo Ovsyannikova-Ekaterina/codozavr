@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Site{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'courses' %}">Courses</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="#" id="logout-button">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <form id="feedback-form">
+            <h3>Feedback</h3>
+            <textarea id="description" name="description" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="feedback-success" style="display: none; color: green;">Thank you for your feedback!</div>
+        <div id="feedback-error" style="display: none; color: red;">Error submitting feedback</div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div id="course-application-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Course Application</h2>
+            <form id="course-application-form">
+                <label for="course_id">Select Course:</label>
+                <select id="course_id" name="course_id">
+                    {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="parent_email">Parent Email:</label>
+                <input type="email" id="parent_email" name="parent_email" required>
+
+                <label for="parent_phone">Parent Phone:</label>
+                <input type="tel" id="parent_phone" name="parent_phone" required>
+
+                {% if parent %}
+                    <input type="hidden" id="parent_id" name="parent_id" value="{{ parent.id }}">
+                {% else %}
+                    <div id="application-error" style="color: red;">You must be a parent to apply for a course.</div>
+                {% endif %}
+
+                <button type="submit" {% if not parent %}disabled{% endif %}>Submit</button>
+            </form>
+            <div id="application-error" style="display: none; color: red;">Error submitting application</div>
+        </div>
+    </div>
+</body>
+</html>

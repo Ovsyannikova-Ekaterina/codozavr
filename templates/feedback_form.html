@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<h1>Feedback Form</h1>
+<form id="feedback-form">
+    <textarea id="description" name="description" placeholder="Describe your feedback" required></textarea>
+    <button type="submit">Submit</button>
+</form>
+<div id="feedback-error" style="display: none; color: red;">Error submitting feedback</div>
+{% endblock %}
